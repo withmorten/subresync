@@ -16,9 +16,8 @@ include('subparse.php');
         <form action="index.php" method="post" id="timeform">
             <table id="formtable">
                 <tr id="theader"><th></th><th colspan="2">resyncs subs via timings</th></tr>
-                <tr id="tfooter"><th></th><th><input type="submit" value="resync" /></th><th><input type="reset" value="reset" /></th><th></th></tr>
+                <tr id="tfooter"><th></th><th><input type="submit" value="resync" /></th><th><input type="reset" value="reset" onclick="return confirm('Really?');" /></th><th></th></tr>
             </table>
         </form>
-        <textarea style="resize:none;"></textarea>
     </body>
 </html>

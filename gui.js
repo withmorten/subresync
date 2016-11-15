@@ -17,25 +17,6 @@ $(function(){
     }
 });
 
-$.fn.tagName = function() {
-  return this.prop("tagName").toLowerCase();
-};
-
-$.fn.forceCursorPosition = function(pos) {
-  this.each(function(index, elem) {
-    if (elem.setSelectionRange) {
-      elem.setSelectionRange(pos, pos);
-    } else if (elem.createTextRange) {
-      var range = elem.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', pos);
-      range.moveStart('character', pos);
-      range.select();
-    }
-  });
-  return this;
-};
-
 function addTimeLine(event = false) {
     var timeForm = $("#"+timeFormId);
     var timeFormTable = $("#formtable");
@@ -57,8 +38,7 @@ function addTimeLine(event = false) {
         timeInput.attr("placeholder", timePlaceHolder);
         timeInput.attr("value", timePlaceHolder);
         timeInput.mask(timeMask);
-        timeInput.focus(focusHandler);
-        // timeInput.click(clickHandler);
+        timeInput.off('focus');
         
         timeInputTd.append(timeInput);
         timeLine.append(timeInputTd);
@@ -87,26 +67,6 @@ function addTimeLine(event = false) {
             $(timeInputs[i]).attr("name", timeLineClassId+"["+i+"]["+timeInputType+"]");
         });
     });;
-}
-
-function sleep(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
-function focusHandler(event) {
-    event.preventDefault();
-    console.log(eventSrc = event.target || event.srcElement);
-}
-
-function clickHandler(event) {
-    // $(event.target || event.srcElement).trigger();
-    eventSrc = event.target || event.srcElement;
-    // sleep(1000).then(() => {
-        // eventSrc.click();
-    // });
-    // eventSrc.setCursorPosition(3);
-    // console.log(event.target || event.srcElement);
-    // event.preventDefault();
 }
 
 function createPlusOneButton(tag = 'd') {
