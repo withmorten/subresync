@@ -1,8 +1,8 @@
 <?php
-define('SRT_STATE_SUBNUMBER', 0);
-define('SRT_STATE_TIME',      1);
-define('SRT_STATE_TEXT',      2);
-define('SRT_STATE_BLANK',     3);
+const SRT_STATE_SUBNUMBER = 0;
+const SRT_STATE_TIME = 1;
+const SRT_STATE_TEXT = 2;
+const SRT_STATE_BLANK = 3;
 
 function parseSrt($lines) {
     
