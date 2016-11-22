@@ -12,10 +12,7 @@
     <body>
 <?php
 require_once('helpers.php');
-if(isset($_POST['submit']) && isset($_POST['timelines'])) {
-    if($_FILES['srtfiles']['error'][0] !== UPLOAD_ERR_NO_FILE) handleForm();
-    else echo 'No files were uploaded/selected.';
-}
+handleForm();
 ?>
     </body>
 </html>

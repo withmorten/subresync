@@ -1,18 +1,21 @@
 <?php
+
 function handleForm() {
-    $srtfiles = reArrayFiles($_FILES['srtfiles']);
-    foreach($srtfiles as $srtfile) {
-        if($srtfile["error"] !== UPLOAD_ERR_OK) die("error on file upload.");
-        if($srtfile["type"] !== "application/x-subrip" || mime_content_type($srtfile["tmp_name"]) !== "text/plain") die("not a srt or even a text file.");
-        if(strtolower(end(explode('.', $srtfile['name']))) !== "srt") die ("no .srt extension.");
-        move_uploaded_file($srtfile["tmp_name"], "uploads/".time()."_".uniqid()."_".$srtfile['name']);
-    }
-    
-    foreach($_POST['timelines'] as $i => $timeline) {
-        $sign = $timeline['sign'] === "+" ? 1 : -1;
-        $sync = getMsFromTime($timeline['sync']) * $sign;
-        $dura = getMsFromTime($timeline['dura']);
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if(empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0) srtErrorMessage(UPLOAD_ERR_INI_SIZE); // catches line 0 file upload errors
+
+        $srtFiles = reArrayFiles($_FILES['srtfiles']);
+        foreach($srtFiles as $srtFile) {
+            $srtError = srtError($srtFile);
+            if($srtError !== 0) srtErrorMessage($srtError);
         
-        if(($sync && $dura) == 0) break;
+            foreach($_POST['timelines'] as $i => $timeline) {
+                $sign = $timeline['sign'] === "+" ? 1 : -1;
+                $sync = getMsFromTime($timeline['sync']) * $sign;
+                $dura = getMsFromTime($timeline['dura']);
+                
+                if(($sync && $dura) == 0) continue;
+            }
+        }
     }
 }

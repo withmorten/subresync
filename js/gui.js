@@ -15,12 +15,8 @@ var defaultTimeSign = getDefaultSign();
 
 $(function(){
     initGui();
-    
     // create 5 timelines by default
     for(var i = 0; i < 5; i++) addTimeLine();
-    
-    // creates file upload buttons
-    // for(var i = 0; i < 2; i++) addFileRow();
 });
 
 function initGui() {
@@ -29,19 +25,25 @@ function initGui() {
     timeForm.attr("enctype", "multipart/form-data");
     timeForm.attr("id", timeFormId);
     
+    var maxFileSizeInput = $("<input>");
+    maxFileSizeInput.attr("type", "hidden");
+    maxFileSizeInput.attr("name", "max_file_size");
+    maxFileSizeInput.attr("value", "2097152");
+    timeForm.append(maxFileSizeInput);
+    
     var timeTable = $("<table>");
     timeTable.attr("id", timeTableId);
     
     var tHeaderRow = $("<tr>");
     tHeaderRow.attr("id", theaderId);
     
-    tHeaderRow.append($("<th>"));
+    tHeaderRow.append($("<td>"));
     
     var tHeaderField = $("<th>");
     tHeaderField.attr("colspan", "3");
     tHeaderField.text("resyncs subs via timings");
     tHeaderRow.append(tHeaderField);
-    tHeaderRow.append(plusOneButton('h').click(addTimeLine));
+    tHeaderRow.append(plusOneButton().click(addTimeLine));
     
     timeTable.append(tHeaderRow);
     
@@ -161,45 +163,14 @@ function addTimeLine(event = false) {
     });
 }
 
-function addFileRow(event = false) {
-    // gets timeTable - repetitive, to be consolidated into one function or so
-    var timeFormTable = $("#"+timeTableId);
-    
-    // initialising new table row
-    var fileRow = $("<tr>");
-    fileRow.attr("id", fileRowId);
-    fileRow.append($("<td>"));
-    
-    var fileField = $("<td>");
-    fileField.attr("colspan", "3");
-    
-    var fileInput = $("<input>");
-    fileInput.attr("type", "file");
-    fileInput.attr("accept", ".srt");
-    fileInput.attr("name", "srtfiles[]");
-    
-    fileField.append(fileInput);
-    
-    fileRow.append(fileField);
-    fileRow.append(plusOneButton().click(addFileRow));
-    
-    $("#"+tfooterId).before(fileRow);
-    
-    // var fileRows = timeFormTable.find("input[type=file]");
-    // $.each(fileRows, function(i, fileRow) {
-        // fileRow = $(fileRow);
-        // fileRow.attr("name", "file"+i);
-    // });
-}
-
 function toggleSignage(event) {
     signInput = $(event.target || event.srcElement);
     if(signInput.attr("value") === "+") signInput.attr("value", "-");
     else signInput.attr("value", "+");
 }
 
-function plusOneButton(tag = 'd') {
-    var plusOneTd = $("<t"+tag+">");
+function plusOneButton() {
+    var plusOneTd = $("<td>");
     var plusOneButton = $("<input>");
     
     plusOneButton.attr("type", "button");

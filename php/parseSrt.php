@@ -5,7 +5,6 @@ const SRT_STATE_TEXT = 2;
 const SRT_STATE_BLANK = 3;
 
 function parseSrt($lines) {
-    
     $subs    = array();
     $state   = SRT_STATE_SUBNUMBER;
     $subNum  = 0;
