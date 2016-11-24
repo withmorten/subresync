@@ -8,6 +8,12 @@ function handleForm() {
         foreach($srtFiles as $srtFile) {
             $srtError = srtError($srtFile);
             if($srtError !== 0) srtErrorMessage($srtError);
+            
+            $srtFileArray = srtToArray(file_get_contents($srtFile["tmp_name"]));
+            dump(arrayToSrt($srtFileArray));
+            foreach($srtFileArray as $srtBlock) {
+                // dump($srtBlock);
+            }
         
             foreach($_POST['timelines'] as $i => $timeline) {
                 $sign = $timeline['sign'] === "+" ? 1 : -1;
