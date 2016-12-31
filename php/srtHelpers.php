@@ -38,7 +38,7 @@ function srtToArray($srtString) {
 
                     $srtArray[] = $srtBlock;
                 } else {
-                    $srtText .= $srtLine;
+                    $srtText .= $srtLine."\n";
                 }
                 break;
         }
@@ -54,8 +54,64 @@ function arrayToSrt($srtArray) {
         $srtString.= $srtBlock->number."\n";
         $srtString.= $srtBlock->startTime." --> ".$srtBlock->stopTime."\n";
         $srtString.= $srtBlock->text."\n";
-        $srtString.= "\n";
+        // $srtString.= "\n";
     }
     
     return $srtString;
+}
+
+const TIME_STATE_HOURS = 0;
+const TIME_STATE_MINUTES = 1;
+const TIME_STATE_SECONDS = 2;
+const TIME_STATE_MILISECONDS = 3;
+
+function getMsFromSrtTime($srtTime) {
+    $timeExplode = explode(":", str_replace(",", ":", $srtTime));
+    $msTime = 0;
+    foreach($timeExplode as $timeState => $timeAmount) {
+        switch($timeState) {
+            case TIME_STATE_HOURS:
+                $timeAmount *= 60;
+            case TIME_STATE_MINUTES:
+                $timeAmount *= 60;
+            case TIME_STATE_SECONDS:
+                $timeAmount *= 1000;
+            case TIME_STATE_MILISECONDS:
+                $msTime     += $timeAmount;
+        }
+    }
+    
+    return $msTime;
+}
+
+const SECONDS_MULTI = 1000;
+const MINUTES_MULTI = 60 * SECONDS_MULTI;
+const HOURS_MULTI   = 60 * MINUTES_MULTI;
+
+function getSrtTimeFromMs($msTime) {
+    $srtTime = '';
+    
+    $hh = (int)  ($msTime / HOURS_MULTI);
+    $mm = (int) (($msTime % HOURS_MULTI) / MINUTES_MULTI);
+    $ss = (int)((($msTime % HOURS_MULTI) % MINUTES_MULTI) / SECONDS_MULTI);
+    $ms = (int)((($msTime % HOURS_MULTI) % MINUTES_MULTI) % SECONDS_MULTI);
+    
+    $srtTime.= str_pad($hh, 2, "0", 0).":";
+    $srtTime.= str_pad($mm, 2, "0", 0).":";
+    $srtTime.= str_pad($ss, 2, "0", 0).",";
+    $srtTime.= str_pad($ms, 3, "0", 0);
+    
+    return $srtTime;
+}
+
+const SRT_TIME_MAX = 362439999; // 99:99:99,999
+
+function timeLinesToMs($timeLines) {
+    $timeLinesMs = array();
+    foreach($timeLines as $i => $timeLine) {
+        $timeLinesMs[$i+1]['sync'] = getMsFromSrtTime($timeLine['sync']) * ($timeLine['sign'] === "+" ? 1 : -1);
+        $timeLineDuration = getMsFromSrtTime($timeLine['dura']);
+        $timeLinesMs[$i+1]['dura'] = $i === $timeLineDuration ? SRT_TIME_MAX : $timeLineDuration;
+    }
+    return $timeLinesMs;
 }

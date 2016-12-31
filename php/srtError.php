@@ -9,14 +9,14 @@ function srtError($srtFile) {
 }
 
 function srtErrorMessage($srtError) {
-    $srtErrors[UPLOAD_ERR_INI_SIZE] = 'UPLOAD_ERR_INI_SIZE';
-    $srtErrors[UPLOAD_ERR_FORM_SIZE] = 'UPLOAD_ERR_FORM_SIZE';
-    $srtErrors[UPLOAD_ERR_PARTIAL] = 'UPLOAD_ERR_PARTIAL';
-    $srtErrors[UPLOAD_ERR_NO_FILE] = 'UPLOAD_ERR_NO_FILE';
-    $srtErrors[UPLOAD_ERR_NO_TMP_DIR] = 'UPLOAD_ERR_NO_TMP_DIR';
-    $srtErrors[UPLOAD_ERR_CANT_WRITE] = 'UPLOAD_ERR_CANT_WRITE';
-    $srtErrors[UPLOAD_ERR_EXTENSION] = 'UPLOAD_ERR_EXTENSION';
-    $srtErrors[UPLOAD_ERR_MIME_TYPE] = 'UPLOAD_ERR_MIME_TYPE';
+    $srtErrors[UPLOAD_ERR_INI_SIZE]   = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';
+    $srtErrors[UPLOAD_ERR_FORM_SIZE]  = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+    $srtErrors[UPLOAD_ERR_PARTIAL]    = 'The uploaded file was only partially uploaded';
+    $srtErrors[UPLOAD_ERR_NO_FILE]    = 'No file was uploaded';
+    $srtErrors[UPLOAD_ERR_NO_TMP_DIR] = 'Missing a temporary folder';
+    $srtErrors[UPLOAD_ERR_CANT_WRITE] = 'Failed to write file to disk';
+    $srtErrors[UPLOAD_ERR_EXTENSION]  = 'File upload stopped by extension';
+    $srtErrors[UPLOAD_ERR_MIME_TYPE]  = 'The uploaded file is not a SubRip/srt file';
     
     predie($srtErrors[$srtError]);
 }
