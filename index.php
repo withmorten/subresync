@@ -14,5 +14,6 @@
 require_once('helpers.php');
 handleForm();
 ?>
+    <textarea id="phparea" style="display: none;"><?php echo $timeLineBlocksJson; ?></textarea>
     </body>
 </html>

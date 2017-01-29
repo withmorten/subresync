@@ -3,6 +3,8 @@ foreach(glob('php/*.php') as $phpFile) {
     require_once($phpFile);
 }
 
+$timeLineBlocksJson = '';
+
 function dump($var) {
     echo "<pre>";
     var_dump($var);

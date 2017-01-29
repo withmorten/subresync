@@ -10,7 +10,7 @@ var timeTableId = "timetable";
 var theaderId = 'theader';
 var tfooterId = 'tfooter';
 var fileRowId = 'filerow';
-var timeInputTypes = ["sign", "sync", "dura"];
+var timeInputTypes = ["sign", "dura", "sync"];
 var defaultTimeSign = getDefaultSign();
 
 $(function(){
@@ -89,6 +89,13 @@ function initGui() {
     
     timeTable.append(tFooterRow);
     timeForm.append(timeTable);
+    
+    var textArea = $("<textarea>");
+    textArea.attr("id", "jsonarea");
+    textArea.attr("name", "jsonarea");
+    textArea.val($("#phparea").val());
+    
+    timeForm.append(textArea);
     
     $("body").append(timeForm);
 }

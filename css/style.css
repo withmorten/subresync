@@ -38,3 +38,16 @@ td.linenumber {
 #tfooter td {
     text-align: center;
 }
+
+#jsonarea {
+    display: inline;
+    margin-left: 25px;
+    margin-top: 3px;
+    height: 140px;
+    width: 300px;
+}
+
+#timetable {
+    display: inline;
+    float: left;
+}
