@@ -43,7 +43,7 @@ td.linenumber {
     display: inline;
     margin-left: 25px;
     margin-top: 3px;
-    height: 140px;
+    height: 164px;
     width: 300px;
 }
 
@@ -51,3 +51,11 @@ td.linenumber {
     display: inline;
     float: left;
 }
+
+input[type=text] {
+    padding-left: 3px;
+}
+
+/*#timetable, #timetable tr, #timetable td, #timetable th {
+    border: 1px solid black;
+}*/

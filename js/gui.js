@@ -10,13 +10,13 @@ var timeTableId = "timetable";
 var theaderId = 'theader';
 var tfooterId = 'tfooter';
 var fileRowId = 'filerow';
-var timeInputTypes = ["sign", "dura", "sync"];
+var timeInputTypes = ["dura", "sign", "sync"];
 var defaultTimeSign = getDefaultSign();
 
 $(function(){
     initGui();
-    // create 5 timelines by default
-    for(var i = 0; i < 5; i++) addTimeLine();
+    // create x timelines by default
+    for(var i = 0; i < 6; i++) addTimeLine();
 });
 
 function initGui() {
@@ -65,10 +65,6 @@ function initGui() {
     
     timeTable.append(fileRow);
     
-    var tFooterRow = $("<tr>");
-    tFooterRow.attr("id", tfooterId);
-    tFooterRow.append($("<td>").attr("colspan", "2"));
-    
     var tSubmit = $("<td>");
     var inputSubmit = $("<input>");
     inputSubmit.attr("name", "submit");
@@ -83,7 +79,11 @@ function initGui() {
     inputReset.attr("onclick", "return confirm('Really?');");
     tReset.append(inputReset);
     
+    var tFooterRow = $("<tr>");
+    tFooterRow.attr("id", tfooterId);
+    tFooterRow.append($("<td>").attr("colspan", "1"));
     tFooterRow.append(tSubmit);
+    tFooterRow.append($("<td>"));
     tFooterRow.append(tReset);
     tFooterRow.append($("<td>"));
     
