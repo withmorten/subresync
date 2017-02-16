@@ -11,7 +11,6 @@ function handleForm() {
             
             foreach($timeLines as $timeLineNum => $timeLine) {
                 if($timeLineNum === 1 && $timeLine['sync'] !== 0) {
-                    echo "hi";
                     $timeLineBlocks[] = array(
                                             'from' => SRT_TIME_MAX - $timeLine['dura'],
                                             'sync' => $timeLine['sync']
@@ -38,7 +37,6 @@ function handleForm() {
             if($srtError !== 0) srtErrorMessage($srtError);
             else {
                 $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents($srtFile["tmp_name"])));
-                // $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents("uploads/01_arrow_clean.srt")));
                 
                 $newSrtFileArrayMs = array();
                 
@@ -62,7 +60,6 @@ function handleForm() {
                 }
                 
                 file_put_contents("uploads/".$srtFile["name"], msArrayToSrt($srtFileArrayMs));
-                // file_put_contents("uploads/02_arrow_edit.srt", msArrayToSrt($srtFileArrayMs));
             }
         }
     }
