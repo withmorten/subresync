@@ -7,7 +7,6 @@ function handleForm() {
             $timeLines = timeLinesToMs($_POST['timelines']);
             $timeLineCount = count($timeLines);
             $timeLineBlocks = array();
-            $c = 0;
             
             foreach($timeLines as $timeLineNum => $timeLine) {
                 if($timeLineNum === 1 && $timeLine['sync'] !== 0) {
@@ -21,14 +20,11 @@ function handleForm() {
                                             'sync' => $timeLine['sync']
                                         );
                 }
-
-                $c++;
             }
         }
         
         if(count($timeLineBlocks) === 0) pre("No timelines containing useful information found!");
-        
-        $GLOBALS["timeLineBlocksJson"] = json_encode($timeLineBlocks);
+        else $GLOBALS["timeLineBlocksJson"] = json_encode($timeLineBlocks);
 
         $srtFiles = reArrayFiles($_FILES['srtfiles']);
         
