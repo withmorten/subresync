@@ -10,14 +10,13 @@ function handleForm() {
             $c = 0;
             
             foreach($timeLines as $timeLineNum => $timeLine) {
-                if($timeLineNum !== 1 && (($timeLine['sync'] || $timeLine['dura']) == 0)) continue;
-                
-                if($timeLineNum === 1) {
+                if($timeLineNum === 1 && $timeLine['sync'] !== 0) {
+                    echo "hi";
                     $timeLineBlocks[] = array(
                                             'from' => SRT_TIME_MAX - $timeLine['dura'],
                                             'sync' => $timeLine['sync']
                                         );
-                } else {
+                } else if(($timeLine['sync'] && $timeLine['dura']) != 0) {
                     $timeLineBlocks[] = array(
                                             'from' => $timeLine['dura'] + $timeLineBlocks[$c-1]['from'] + $timeLineBlocks[$c-1]['sync'],
                                             'sync' => $timeLine['sync']
@@ -28,7 +27,7 @@ function handleForm() {
             }
         }
         
-        if(count($timeLineBlocks) === 1) echo "No timelines containing useful information found!";
+        if(count($timeLineBlocks) === 0) pre("No timelines containing useful information found!");
         
         $GLOBALS["timeLineBlocksJson"] = json_encode($timeLineBlocks);
 
@@ -37,33 +36,34 @@ function handleForm() {
         foreach($srtFiles as $srtFile) {
             $srtError = srtError($srtFile);
             if($srtError !== 0) srtErrorMessage($srtError);
-            
-            $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents($srtFile["tmp_name"])));
-            // $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents("uploads/01_arrow_clean.srt")));
-            
-            $newSrtFileArrayMs = array();
-            
-            foreach($timeLineBlocks as $timeLineBlock) {
-                $c = 1;
-                foreach($srtFileArrayMs as $srtNum => $srtBlockMs) {
-                    if($srtBlockMs["Start"] >= $timeLineBlock["from"]) {
-                        $newStart = z($srtBlockMs["Start"] + $timeLineBlock["sync"]);
-                        $newStop  = z($srtBlockMs["Stop"]  + $timeLineBlock["sync"]);
-                        
-                        if(($newStop - $newStart) === 0) {   // delete srtBlock because it's in negative space
-                            unset($srtFileArrayMs[$srtNum]); // keep lines that don't end at 0 and remove them manually
-                        } else {
-                            $srtFileArrayMs[$srtNum]["Num"]   = $c;
-                            $srtFileArrayMs[$srtNum]["Start"] = $newStart;
-                            $srtFileArrayMs[$srtNum]["Stop"]  = $newStop;
+            else {
+                $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents($srtFile["tmp_name"])));
+                // $srtFileArrayMs = srtFileArrayToMs(srtToArray(file_get_contents("uploads/01_arrow_clean.srt")));
+                
+                $newSrtFileArrayMs = array();
+                
+                foreach($timeLineBlocks as $timeLineBlock) {
+                    $c = 1;
+                    foreach($srtFileArrayMs as $srtNum => $srtBlockMs) {
+                        if($srtBlockMs["Start"] >= $timeLineBlock["from"]) {
+                            $newStart = z($srtBlockMs["Start"] + $timeLineBlock["sync"]);
+                            $newStop  = z($srtBlockMs["Stop"]  + $timeLineBlock["sync"]);
+                            
+                            if(($newStop - $newStart) === 0) {   // delete srtBlock because it's in negative space
+                                unset($srtFileArrayMs[$srtNum]); // keep lines that don't end at 0 and remove them manually
+                            } else {
+                                $srtFileArrayMs[$srtNum]["Num"]   = $c;
+                                $srtFileArrayMs[$srtNum]["Start"] = $newStart;
+                                $srtFileArrayMs[$srtNum]["Stop"]  = $newStop;
+                            }
                         }
+                        $c++;
                     }
-                    $c++;
                 }
+                
+                file_put_contents("uploads/".$srtFile["name"], msArrayToSrt($srtFileArrayMs));
+                // file_put_contents("uploads/02_arrow_edit.srt", msArrayToSrt($srtFileArrayMs));
             }
-            
-            file_put_contents("uploads/".$srtFile["name"], msArrayToSrt($srtFileArrayMs));
-            // file_put_contents("uploads/02_arrow_edit.srt", msArrayToSrt($srtFileArrayMs));
         }
     }
 }

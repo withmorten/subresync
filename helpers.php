@@ -11,7 +11,11 @@ function dump($var) {
     echo "</pre>";
 }
 
-function predie($msg) {
+function pre($msg) {
     echo "<pre>".$msg."</pre>";
+}
+
+function predie($msg) {
+    pre($msg);
     die();
 }
