@@ -8,6 +8,7 @@ function handleForm() {
             $timeLineCount = count($timeLines);
             $timeLineBlocks = array();
             
+            $c = 0;
             foreach($timeLines as $timeLineNum => $timeLine) {
                 if($timeLineNum === 1 && $timeLine['sync'] !== 0) {
                     $timeLineBlocks[] = array(
@@ -20,6 +21,7 @@ function handleForm() {
                                             'sync' => $timeLine['sync']
                                         );
                 }
+                $c++;
             }
         }
         
