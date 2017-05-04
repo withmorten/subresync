@@ -190,7 +190,7 @@ function plusOneButton() {
 }
 
 function getDefaultSign() {
-    if(getUrlParameter("sign") === "positive") {
+    if(getUrlParameter("s") === "p") {
         var sign = "+";
     } else {
         var sign = "-";
