@@ -2,9 +2,9 @@
 const UPLOAD_ERR_MIME_TYPE = 9;
 
 function srtError($srtFile) {
-    if($srtFile["error"] === UPLOAD_ERR_NO_FILE)                  return $srtFile["error"];
-    if($srtFile["type"] !== "application/x-subrip")               return UPLOAD_ERR_MIME_TYPE;
-    if(strtolower(end(explode('.', $srtFile['name']))) !== "srt") return UPLOAD_ERR_MIME_TYPE;
+    if($srtFile["error"] === UPLOAD_ERR_NO_FILE)    return $srtFile["error"];
+    if($srtFile["type"] !== "application/x-subrip") return UPLOAD_ERR_MIME_TYPE;
+    if(pathinfo($srtFile['name'], 4) !== "srt")     return UPLOAD_ERR_MIME_TYPE;
     return $srtFile["error"];
 }
 
