@@ -17,6 +17,6 @@ function srtErrorMessage($srtError) {
     $srtErrors[UPLOAD_ERR_CANT_WRITE] = 'Failed to write file to disk';
     $srtErrors[UPLOAD_ERR_EXTENSION]  = 'File upload stopped by extension';
     $srtErrors[UPLOAD_ERR_MIME_TYPE]  = 'The uploaded file is not a SubRip/srt file';
-    
+
     pre($srtErrors[$srtError]);
 }

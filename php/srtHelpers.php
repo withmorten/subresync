@@ -7,13 +7,13 @@ const SRT_STATE_BLANK = 3;
 function srtToArray($srtString) {
     $srtArray = array();
     $state    = SRT_STATE_SUBNUMBER;
-    
+
     $srtNum   = 0;
     $srtText  = '';
     $srtTime  = '';
-    
+
     $srtLines = preg_split("/\r\n|\n|\r/", $srtString);
-    
+
     foreach($srtLines as $srtLine) {
         switch($state) {
             case SRT_STATE_SUBNUMBER:
@@ -43,7 +43,7 @@ function srtToArray($srtString) {
                 break;
         }
     }
-    
+
     return $srtArray;
 }
 
@@ -67,7 +67,7 @@ function getMsFromSrtTime($srtTime) {
                 $msTime     += $timeAmount;
         }
     }
-    
+
     return $msTime;
 }
 
@@ -77,17 +77,17 @@ const HOURS_MULTI   = 60 * MINUTES_MULTI;
 
 function getSrtTimeFromMs($msTime) {
     $srtTime = '';
-    
+
     $hh = (int)  ($msTime / HOURS_MULTI);
     $mm = (int) (($msTime % HOURS_MULTI) / MINUTES_MULTI);
     $ss = (int)((($msTime % HOURS_MULTI) % MINUTES_MULTI) / SECONDS_MULTI);
     $ms = (int)((($msTime % HOURS_MULTI) % MINUTES_MULTI) % SECONDS_MULTI);
-    
+
     $srtTime.= str_pad($hh, 2, "0", 0).":";
     $srtTime.= str_pad($mm, 2, "0", 0).":";
     $srtTime.= str_pad($ss, 2, "0", 0).",";
     $srtTime.= str_pad($ms, 3, "0", 0);
-    
+
     return $srtTime;
 }
 
@@ -111,7 +111,7 @@ function srtFileArrayToMs($srtFileArray) {
         $srtFileArrayMs[$s]["Stop"]  = getMsFromSrtTime($srtBlock->stopTime);
         $srtFileArrayMs[$s]["Dura"]  = $srtFileArrayMs[$s]["Stop"] - $srtFileArrayMs[$s]["Start"];
         $srtFileArrayMs[$s]["Text"]  = $srtBlock->text;
-        
+
         $s++;
     }
     return $srtFileArrayMs;
@@ -119,29 +119,25 @@ function srtFileArrayToMs($srtFileArray) {
 
 function msArrayToSrt($msArray) {
     $srtString = '';
-    
+
     foreach($msArray as $srtBlock) {
         $srtString.= $srtBlock["Num"]."\r\n";
         $srtString.= getSrtTimeFromMs($srtBlock["Start"])." --> ".getSrtTimeFromMs($srtBlock["Stop"])."\r\n";
         $srtString.= $srtBlock["Text"]."\r\n";
     }
-    
+
     return $srtString;
 }
 
 function arrayToSrt($srtArray) {
     $srtString = '';
-    
+
     foreach($srtArray as $srtBlock) {
         $srtString.= $srtBlock->number."\r\n";
         $srtString.= $srtBlock->startTime." --> ".$srtBlock->stopTime."\r\n";
         $srtString.= $srtBlock->text."\r\n";
         // $srtString.= "\n";
     }
-    
-    return $srtString;
-}
 
-function z($int) {
-    return max($int, 0);
+    return $srtString;
 }
